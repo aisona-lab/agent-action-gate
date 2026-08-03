@@ -2,6 +2,8 @@
 
 Per tool call, before it runs: **allow**, **deny**, or **require human approval**. Local-first, deterministic, no LLM in the authorization path.
 
+![An agent's terraform.apply against production is blocked, approved once by a human, executed, and the replayed token is denied](docs/demo.gif)
+
 An agent with a valid credential can still run `terraform apply` against production. Model-level guardrails can't enforce whether *this exact call* should happen *now*. A YAML policy can.
 
 ```python
