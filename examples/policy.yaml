@@ -1,0 +1,24 @@
+version: 1
+defaults:
+  effect: deny
+rules:
+  - id: github-read
+    match: {tool: "github.*", action: read}
+    effect: allow
+    reason: Read-only GitHub operations are allowed.
+  - id: production-terraform
+    match: {tool: terraform.apply, env: production}
+    effect: approval_required
+    reason: Production applies require human approval.
+  - id: large-refund
+    match: {tool: stripe.refund, args: {amount: {gt: 50000}}}
+    effect: approval_required
+    reason: Large refunds require human approval.
+  - id: dangerous-delete
+    match: {tool: "github.delete_*"}
+    effect: deny
+    reason: Repository deletion is disabled.
+budgets:
+  max_tool_calls_per_task: 3
+  max_estimated_cost_usd: 2
+redact: [args.customer.email]
