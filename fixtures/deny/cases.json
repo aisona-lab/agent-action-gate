@@ -1,0 +1,17 @@
+[
+  {
+    "id": "deny-unmatched-default",
+    "call": {"tool": "stripe.refund", "args": {"amount": 1}},
+    "effect": "deny"
+  },
+  {
+    "id": "deny-dangerous-delete",
+    "call": {"tool": "github.delete_repository", "args": {"name": "demo"}},
+    "effect": "deny"
+  },
+  {
+    "id": "deny-write-without-rule",
+    "call": {"tool": "github.get_repo", "action": "write"},
+    "effect": "deny"
+  }
+]

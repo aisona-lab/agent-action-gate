@@ -1,0 +1,12 @@
+[
+  {
+    "id": "clean-allow-github-read",
+    "call": {"tool": "github.get_repo", "action": "read"},
+    "effect": "allow"
+  },
+  {
+    "id": "clean-allow-github-list",
+    "call": {"tool": "github.list_issues", "action": "read", "args": {"org": "aisona-lab"}},
+    "effect": "allow"
+  }
+]

@@ -1,0 +1,10 @@
+version: 1
+defaults:
+  effect: deny
+rules:
+  - id: same
+    match: {}
+    effect: allow
+  - id: same
+    match: {}
+    effect: deny

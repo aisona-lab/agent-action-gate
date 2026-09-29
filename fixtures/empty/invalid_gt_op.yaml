@@ -1,0 +1,7 @@
+version: 1
+defaults:
+  effect: deny
+rules:
+  - id: bad-lt
+    match: {tool: stripe.refund, args: {amount: {lt: 2}}}
+    effect: allow
