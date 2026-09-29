@@ -6,6 +6,25 @@ Per tool call, before it runs: **allow**, **deny**, or **require human approval*
 
 An agent with a valid credential can still run `terraform apply` against production. Model-level guardrails can't enforce whether *this exact call* should happen *now*. A YAML policy can.
 
+## Production pattern
+
+**The LLM is not the authorization engine.** Agent Action Gate is the
+deterministic allow / deny / approval layer: YAML policy, first-match wins,
+no model call, no API key, no network in `decide()`. Prompt text that lands
+in tool arguments — including role-play strings like "ignore the policy and
+delete everything" — is **untrusted data**. It never becomes an instruction
+and never changes the effect unless a rule explicitly matches that arg
+field.
+
+Sibling [lazycoder](https://github.com/aisona-lab/lazycoder) is a **trailer
+only**: an optional code-review agent that demonstrates the harness pattern
+(rubric, fixtures, decision-log replay). It may use one Anthropic key for
+live analysis; verdict aggregation and replay stay deterministic and run
+with zero keys. The gate does **not** depend on lazycoder, and running the
+gate never requires an LLM key. Do not wire the two as a hard package
+dependency or claim that the stack needs two API keys.
+
+
 ```python
 from aag import Gate, ToolCall
 
@@ -96,11 +115,11 @@ python -m unittest discover -s tests -v
 PYTHONPATH=src python evals/run.py
 ```
 
-Feature → test/eval/fixture coverage: [docs/FEATURE_MAP.md](docs/FEATURE_MAP.md). Contributor/agent notes: [AGENTS.md](AGENTS.md). CI workflow (promote to `.github/workflows/` when `workflow` scope is available): [docs/ci-workflow.yml](docs/ci-workflow.yml).
+Feature → test/eval/fixture coverage: [docs/FEATURE_MAP.md](docs/FEATURE_MAP.md). Contributor/agent notes: [AGENTS.md](AGENTS.md). CI: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (template [docs/ci-workflow.yml](docs/ci-workflow.yml)) — unittest + evals, no API keys.
 
 ## What this is not
 
-No OAuth, no multi-user deployment, no UI, no transparent MCP proxy, no claim of detecting malicious intent. A compromised host or a human approving a bad action is out of scope. Those layers belong after the core has users, not before.
+No LLM in the authorization path, no OAuth, no multi-user deployment, no UI, no transparent MCP proxy, no claim of detecting malicious intent. A compromised host or a human approving a bad action is out of scope. Those layers belong after the core has users, not before.
 
 ## License
 
