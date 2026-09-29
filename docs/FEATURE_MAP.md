@@ -9,6 +9,8 @@ untrusted data (see `malicious/` + `test_llm_text_in_args_does_not_change_decide
 optional LLM analysis, deterministic verdict/replay — not an auth engine and
 not required to run this package.
 
+Process lessons: [`LEARNINGS.md`](../LEARNINGS.md) (SPEC→PLAN→OK→prove→merge; gate=auth thesis, zero LLM).
+
 ## Core (`src/aag/core.py`)
 
 | Feature | Unit tests | Evals (`evals/cases.json`) | Fixtures |
