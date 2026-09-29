@@ -56,3 +56,7 @@ Each pack has `cases.json`. Optional `policy` paths are relative to the pack dir
 1. Run both unittest and evals; both must be green.
 2. Leave a clean tree (no half-open work, no `.venv` committed).
 3. Update `docs/FEATURE_MAP.md` when adding coverage.
+
+## CI
+
+Intended GitHub Actions workflow: [docs/ci-workflow.yml](docs/ci-workflow.yml). Promote it to `.github/workflows/ci.yml` with a credential that has the `workflow` OAuth scope (the default `gh` token on this box only has `repo`).

@@ -96,7 +96,7 @@ python -m unittest discover -s tests -v
 PYTHONPATH=src python evals/run.py
 ```
 
-Feature → test/eval/fixture coverage: [docs/FEATURE_MAP.md](docs/FEATURE_MAP.md). Contributor/agent notes: [AGENTS.md](AGENTS.md).
+Feature → test/eval/fixture coverage: [docs/FEATURE_MAP.md](docs/FEATURE_MAP.md). Contributor/agent notes: [AGENTS.md](AGENTS.md). CI workflow (promote to `.github/workflows/` when `workflow` scope is available): [docs/ci-workflow.yml](docs/ci-workflow.yml).
 
 ## What this is not
 

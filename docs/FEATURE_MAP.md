@@ -44,4 +44,4 @@ python -m unittest discover -s tests -v
 PYTHONPATH=src python evals/run.py
 ```
 
-CI: `.github/workflows/ci.yml` runs install + unittest + evals on Python 3.9 and 3.11.
+CI: intended workflow is `docs/ci-workflow.yml` (copy to `.github/workflows/ci.yml` once a token with the `workflow` scope can push it). Runs install + unittest + evals on Python 3.9 and 3.11.
