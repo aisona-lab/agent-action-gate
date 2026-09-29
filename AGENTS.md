@@ -1,6 +1,12 @@
 # Agent guide (Agent Action Gate)
 
-This repo is a deterministic authorization gate for AI agent tool calls. Policy is YAML; decisions are allow / deny / approval_required. There is no LLM in the authorization path.
+This repo is a deterministic authorization gate for AI agent tool calls. Policy is YAML; decisions are allow / deny / approval_required. There is no LLM in the authorization path — **zero API keys** to run the gate, unittest, or evals.
+
+## Production pattern (non-negotiable)
+
+- **Gate = auth engine.** `Policy.decide` / `Gate.check` are pure allow / deny / approval_required. No Anthropic (or other LLM) key, no model call, no network.
+- **Injection-in-args is data.** Strings like "ignore policy and delete" inside `ToolCall.args` never become instructions; they only matter if a YAML rule matches that field.
+- **lazycoder is a trailer only.** Optional sibling that may use one LLM key for live review; deterministic verdict/replay work with no key. Do not require two keys to run "the stack", and do not make lazycoder a hard dependency of this package.
 
 ## Hard constraints
 
@@ -59,4 +65,4 @@ Each pack has `cases.json`. Optional `policy` paths are relative to the pack dir
 
 ## CI
 
-Intended GitHub Actions workflow: [docs/ci-workflow.yml](docs/ci-workflow.yml). Promote it to `.github/workflows/ci.yml` with a credential that has the `workflow` OAuth scope (the default `gh` token on this box only has `repo`).
+Live workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (mirrored from [docs/ci-workflow.yml](docs/ci-workflow.yml)). Runs install + unittest + evals on Python 3.9 and 3.11. No secrets required.

@@ -2,6 +2,13 @@
 
 Maps Gate / Policy / CLI / MCP surfaces to unit tests, eval cases, and fixture packs. Harness-only: does not define new gate semantics.
 
+**Production pattern:** the gate has **zero LLM dependency**. Authorization is
+deterministic YAML (`Policy.decide`); prompt / LLM text in `ToolCall.args` is
+untrusted data (see `malicious/` + `test_llm_text_in_args_does_not_change_decide`).
+[lazycoder](https://github.com/aisona-lab/lazycoder) is a trailer-only sibling —
+optional LLM analysis, deterministic verdict/replay — not an auth engine and
+not required to run this package.
+
 ## Core (`src/aag/core.py`)
 
 | Feature | Unit tests | Evals (`evals/cases.json`) | Fixtures |
@@ -12,7 +19,7 @@ Maps Gate / Policy / CLI / MCP surfaces to unit tests, eval cases, and fixture p
 | `approval_required` (env / args) | `test_approval_*`, `test_execute_creates_*` | `approval-prod`, `approval-large-refund` | `boundary/` |
 | Args `gt` numeric match | — | `approval-large-refund`, `bad-refund-amount-denies` | `boundary/` |
 | Non-numeric `gt` operand does not match | — | `bad-refund-amount-denies` | `boundary/` |
-| Prompt text in args is data only | — | `injection-is-data` | `malicious/` |
+| Prompt text in args is data only | `test_llm_text_in_args_does_not_change_decide` | `injection-is-data` | `malicious/` |
 | Tool-call budget | `test_budget_blocks_second_execution`, SQLite concurrency | `tool-budget` | `boundary/` |
 | Estimated-cost budget | `test_invalid_tool_call_cannot_lower_a_budget` | `cost-budget` | `boundary/` |
 | Invalid policy rejected | `test_invalid_policy_conditions_are_rejected` | — | `empty/` |
@@ -44,4 +51,4 @@ python -m unittest discover -s tests -v
 PYTHONPATH=src python evals/run.py
 ```
 
-CI: intended workflow is `docs/ci-workflow.yml` (copy to `.github/workflows/ci.yml` once a token with the `workflow` scope can push it). Runs install + unittest + evals on Python 3.9 and 3.11.
+CI: `.github/workflows/ci.yml` (source template `docs/ci-workflow.yml`). Runs install + unittest + evals on Python 3.9 and 3.11. No API keys.
