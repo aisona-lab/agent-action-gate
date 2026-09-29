@@ -1,0 +1,38 @@
+[
+  {
+    "id": "boundary-gt-exact-threshold-denies",
+    "call": {"tool": "stripe.refund", "args": {"amount": 50000}},
+    "effect": "deny"
+  },
+  {
+    "id": "boundary-gt-just-over-requires-approval",
+    "call": {"tool": "stripe.refund", "args": {"amount": 50001}},
+    "effect": "approval_required"
+  },
+  {
+    "id": "boundary-gt-string-amount-denies",
+    "call": {"tool": "stripe.refund", "args": {"amount": "50001"}},
+    "effect": "deny"
+  },
+  {
+    "id": "boundary-tool-budget",
+    "setup": [
+      {"tool": "github.get_repo", "action": "read"},
+      {"tool": "github.get_repo", "action": "read"},
+      {"tool": "github.get_repo", "action": "read"}
+    ],
+    "call": {"tool": "github.get_repo", "action": "read"},
+    "effect": "deny"
+  },
+  {
+    "id": "boundary-cost-budget",
+    "setup": [{"tool": "github.get_repo", "action": "read", "estimated_cost_usd": 1.0}],
+    "call": {"tool": "github.get_repo", "action": "read", "estimated_cost_usd": 1.1},
+    "effect": "deny"
+  },
+  {
+    "id": "boundary-prod-apply-approval",
+    "call": {"tool": "terraform.apply", "env": "production"},
+    "effect": "approval_required"
+  }
+]

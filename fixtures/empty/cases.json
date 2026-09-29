@@ -1,0 +1,32 @@
+[
+  {
+    "id": "empty-missing-defaults-effect",
+    "policy": "no_defaults.yaml",
+    "expect_error": "PolicyError"
+  },
+  {
+    "id": "empty-unknown-match-field",
+    "policy": "bad_match.yaml",
+    "expect_error": "PolicyError"
+  },
+  {
+    "id": "empty-duplicate-rule-ids",
+    "policy": "duplicate_ids.yaml",
+    "expect_error": "PolicyError"
+  },
+  {
+    "id": "empty-invalid-gt-operator",
+    "policy": "invalid_gt_op.yaml",
+    "expect_error": "PolicyError"
+  },
+  {
+    "id": "empty-tool-name",
+    "call": {"tool": ""},
+    "expect_error": "ValueError"
+  },
+  {
+    "id": "empty-negative-cost",
+    "call": {"tool": "github.get_repo", "action": "read", "estimated_cost_usd": -1},
+    "expect_error": "ValueError"
+  }
+]
