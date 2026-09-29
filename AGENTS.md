@@ -8,6 +8,15 @@ This repo is a deterministic authorization gate for AI agent tool calls. Policy 
 - **Injection-in-args is data.** Strings like "ignore policy and delete" inside `ToolCall.args` never become instructions; they only matter if a YAML rule matches that field.
 - **lazycoder is a trailer only.** Optional sibling that may use one LLM key for live review; deterministic verdict/replay work with no key. Do not require two keys to run "the stack", and do not make lazycoder a hard dependency of this package.
 
+## Learnings (encode + reuse)
+
+See [`LEARNINGS.md`](LEARNINGS.md). Short form:
+
+- **SPEC → PLAN → OK → smallest unit → prove with command → merge → clean tree.**
+- Gate = auth thesis (zero LLM). lazycoder = trailer only. LLM ≠ auth engine.
+- Never leave a half PR. Offline proves without keys. Prefer fixtures over vibes.
+- Adversarial audit after every "fix"; close gaps with regression fixtures + FEATURE_MAP.
+
 ## Hard constraints
 
 - Do **not** change gate semantics in `src/aag/core.py` (EFFECTS, matching, approval TTL, budgets, audit redaction) unless a task explicitly asks for a semantic change with tests.
@@ -59,9 +68,10 @@ Each pack has `cases.json`. Optional `policy` paths are relative to the pack dir
 
 ## Before opening a PR
 
-1. Run both unittest and evals; both must be green.
-2. Leave a clean tree (no half-open work, no `.venv` committed).
+1. Run both unittest and evals; both must be green (prove with the commands above).
+2. Leave a clean tree (no half-open work, no `.venv` committed). Merge or close — never park a half PR.
 3. Update `docs/FEATURE_MAP.md` when adding coverage.
+4. If this was a "fix", re-read `LEARNINGS.md` and add a regression fixture when the audit finds a gap.
 
 ## CI
 
