@@ -51,7 +51,7 @@ Process lessons: [`LEARNINGS.md`](../LEARNINGS.md) (SPEC→PLAN→OK→prove→m
 
 | Feature | Tests / proof | Notes |
 |---------|---------------|-------|
-| Offline decide → SARIF + upload-sarif workflow | `examples/ci-sarif/`, `.github/workflows/example-sarif.yml` | Demo only; not CodeQL. Path-filtered + `workflow_dispatch`. Upload on main push / dispatch (fork PRs may skip). Main `ci.yml` unchanged / keyless. |
+| Offline decide → SARIF + upload-sarif workflow | `examples/ci-sarif/`, `.github/workflows/example-sarif.yml` | Demo only; not CodeQL. Path-filtered + `workflow_dispatch`. Upload on main push / dispatch; PRs artifact only. Example adds physicalLocation for GitHub. Main `ci.yml` unchanged / keyless. |
 
 ## How to run
 

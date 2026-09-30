@@ -43,9 +43,11 @@ Workflow: [`.github/workflows/example-sarif.yml`](../../.github/workflows/exampl
 - Triggers: `workflow_dispatch`, and push / pull_request path-filtered to this
   example, the workflow file, and `src/aag/**`
 - Permissions: `contents: read`, `security-events: write`
-- **SARIF upload** runs on `push` to `main` and on `workflow_dispatch` from this
-  repo. Pull requests still generate SARIF (artifact) but skip upload when the
-  head is a fork (GitHub often denies `security-events` write on fork PRs).
+- **SARIF upload** runs only on `push` to `main` and `workflow_dispatch` from
+  this repo (PR jobs still generate SARIF and upload it as an artifact).
+- `generate_sarif.py` adds a `physicalLocation` pointing at each fixture call
+  JSON so GitHub code scanning can process the file (core `aag.sarif` export
+  keeps logicalLocations only).
 - Visibility: GitHub may only show third-party code scanning results on the
   **default branch**, and only when code scanning is available for the repo
   (public repos, or private with GitHub Advanced Security).

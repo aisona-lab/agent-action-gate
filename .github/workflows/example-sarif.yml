@@ -47,15 +47,14 @@ jobs:
           path: aag-example.sarif
 
       # Upload to code scanning so Security tab can show deny findings.
-      # Fork PRs often lack security-events write — skip those; push to main /
-      # workflow_dispatch from this repo still publishes after merge.
+      # Only on push to main or workflow_dispatch from this repo. PR runs still
+      # generate + artifact the SARIF (fork / PR uploads are often blocked or
+      # only visible on the default branch).
       - name: Upload SARIF to code scanning
         if: >
           github.event_name == 'workflow_dispatch' ||
-          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-          (github.event_name == 'pull_request' &&
-           github.event.pull_request.head.repo.full_name == github.repository)
-        uses: github/codeql-action/upload-sarif@v3
+          (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: aag-example.sarif
           category: agent-action-gate-example
