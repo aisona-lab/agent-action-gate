@@ -79,6 +79,18 @@ Publishing: `.github/workflows/publish.yml` is a Trusted Publisher stub
 Environment `pypi` to PyPI before the first real release; until then keep
 using `pip install -e .`.
 
+## SARIF export (offline)
+
+Map a decision to [SARIF 2.1.0](https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html) for security tooling / hiring demos. Pure export — no network, no API keys, no change to allow / deny / approval_required semantics.
+
+```bash
+aag decide examples/policy.yaml \
+  '{"tool":"github.delete_repository","args":{"name":"demo"}}' --format sarif
+# version 2.1.0; deny → result level error; allow → empty results
+```
+
+Golden fixtures: [`fixtures/sarif/`](fixtures/sarif/). API: `aag.sarif.decision_to_sarif`.
+
 ## Approvals that survive restarts
 
 Pass a SQLite path. Tokens are stored as hashes, expire in 10 minutes, and are consumed exactly once.

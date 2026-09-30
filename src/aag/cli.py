@@ -3,6 +3,7 @@ import json
 
 from .core import Gate, Policy, ToolCall
 from .approvals import ApprovalServer
+from .sarif import decision_to_sarif
 
 
 def main() -> None:
@@ -13,6 +14,12 @@ def main() -> None:
     decide = sub.add_parser("decide", help="evaluate a call JSON object")
     decide.add_argument("policy")
     decide.add_argument("call", help="JSON object with tool, action, args, env and task_id")
+    decide.add_argument(
+        "--format",
+        choices=("json", "sarif"),
+        default="json",
+        help="output format (default: json decision object; sarif = SARIF 2.1.0 log)",
+    )
     serve = sub.add_parser("serve-approvals", help="serve local human approvals on 127.0.0.1")
     serve.add_argument("policy")
     serve.add_argument("--state", default="aag.db", help="SQLite state path (default: aag.db)")
@@ -28,7 +35,11 @@ def main() -> None:
         server.serve_forever()
         return
     gate = Gate.from_file(args.policy)
-    decision = gate.check(ToolCall(**json.loads(args.call)))
+    call = ToolCall(**json.loads(args.call))
+    decision = gate.check(call)
+    if args.format == "sarif":
+        print(json.dumps(decision_to_sarif(decision, call), sort_keys=True))
+        return
     print(json.dumps(decision.__dict__, sort_keys=True))
 
 

@@ -44,6 +44,7 @@ Process lessons: [`LEARNINGS.md`](../LEARNINGS.md) (SPEC→PLAN→OK→prove→m
 |---------|------------|-------|----------|
 | Local approval HTTP approve flow | `test_local_http_server_approves_a_call` | — | — |
 | `aag policy-check` / `decide` | manual / CI can invoke policy-check on example | fixture policies validated via runner | `empty/` (invalid) |
+| `decide --format sarif` (SARIF 2.1.0 export) | `tests/test_sarif.py` | — | `fixtures/sarif/` |
 
 ## How to run
 
