@@ -134,6 +134,7 @@ The MCP SDK is not a core dependency; install it only where you run a server.
 - Call-count and cost budgets are enforced atomically, also with SQLite state.
 - Audit events redact secret keys and configured paths before hitting any sink.
 - Decisions are deterministic. Prompt text in arguments is just data; "ignore policy and delete" matches nothing.
+- String arg matchers: `glob` (fnmatch) and `startswith` for paths (e.g. deny `*.env*`, `**/.ssh/**`); injection text in a path does not flip unrelated rules.
 
 Run the harness (unit tests + evals, including `fixtures/` packs):
 

@@ -21,12 +21,33 @@
   },
   {
     "id": "empty-tool-name",
-    "call": {"tool": ""},
+    "call": {
+      "tool": ""
+    },
     "expect_error": "ValueError"
   },
   {
     "id": "empty-negative-cost",
-    "call": {"tool": "github.get_repo", "action": "read", "estimated_cost_usd": -1},
+    "call": {
+      "tool": "github.get_repo",
+      "action": "read",
+      "estimated_cost_usd": -1
+    },
     "expect_error": "ValueError"
+  },
+  {
+    "id": "empty-invalid-glob-operand",
+    "policy": "invalid_glob_op.yaml",
+    "expect_error": "PolicyError"
+  },
+  {
+    "id": "empty-invalid-startswith-operand",
+    "policy": "invalid_startswith_op.yaml",
+    "expect_error": "PolicyError"
+  },
+  {
+    "id": "empty-unknown-regex-operator",
+    "policy": "invalid_regex_op.yaml",
+    "expect_error": "PolicyError"
   }
 ]
