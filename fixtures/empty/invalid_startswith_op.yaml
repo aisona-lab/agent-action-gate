@@ -1,0 +1,7 @@
+version: 1
+defaults:
+  effect: deny
+rules:
+  - id: bad-startswith
+    match: {tool: fs.write, args: {path: {startswith: true}}}
+    effect: allow

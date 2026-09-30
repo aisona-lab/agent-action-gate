@@ -21,6 +21,7 @@ Process lessons: [`LEARNINGS.md`](../LEARNINGS.md) (SPEC→PLAN→OK→prove→m
 | `approval_required` (env / args) | `test_approval_*`, `test_execute_creates_*` | `approval-prod`, `approval-large-refund` | `boundary/` |
 | Args `gt` numeric match | — | `approval-large-refund`, `bad-refund-amount-denies` | `boundary/` |
 | Non-numeric `gt` operand does not match | — | `bad-refund-amount-denies` | `boundary/` |
+| Args `glob` / `startswith` string path match | `test_args_glob_and_startswith_match_string_paths`, `test_path_injection_string_is_data_not_policy` | `deny-dotenv-path-glob`, `deny-ssh-path-glob`, `allow-workspace-startswith`, `path-injection-still-allow-workspace`, `path-injection-does-not-flip-github-read` | `path_glob/` |
 | Prompt text in args is data only | `test_llm_text_in_args_does_not_change_decide` | `injection-is-data` | `malicious/` |
 | Tool-call budget | `test_budget_blocks_second_execution`, SQLite concurrency | `tool-budget` | `boundary/` |
 | Estimated-cost budget | `test_invalid_tool_call_cannot_lower_a_budget` | `cost-budget` | `boundary/` |
@@ -30,6 +31,8 @@ Process lessons: [`LEARNINGS.md`](../LEARNINGS.md) (SPEC→PLAN→OK→prove→m
 | Approval TTL / expiry | `test_expired_approval_is_rejected` | — | — |
 | Audit redaction | `test_audit_redacts_*` | — | — |
 | SQLite persistence | `test_sqlite_persists_*`, `test_sqlite_budget_*` | — | — |
+
+Stage 3a path operators are **string-only** (`glob` via `fnmatchcase`, `startswith`). No path normalization, symlink resolution, or `..` collapsing — residual risk if callers pass unresolved paths; policy authors should deny sensitive patterns explicitly.
 
 ## MCP (`src/aag/mcp.py`)
 

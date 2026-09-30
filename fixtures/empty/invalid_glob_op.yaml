@@ -1,0 +1,7 @@
+version: 1
+defaults:
+  effect: deny
+rules:
+  - id: bad-glob
+    match: {tool: fs.write, args: {path: {glob: 1}}}
+    effect: allow

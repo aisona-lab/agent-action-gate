@@ -140,6 +140,10 @@ def _matches(match: Dict[str, Any], call: ToolCall) -> bool:
                 return False
             if "eq" in expected and actual != expected["eq"]:
                 return False
+            if "glob" in expected and not (isinstance(actual, str) and fnmatchcase(actual, expected["glob"])):
+                return False
+            if "startswith" in expected and not (isinstance(actual, str) and actual.startswith(expected["startswith"])):
+                return False
         elif actual != expected:
             return False
     return True
@@ -155,12 +159,15 @@ def _validate_match(match: Dict[str, Any]) -> None:
     for name, condition in (args or {}).items():
         if not isinstance(condition, dict):
             continue
-        unknown_condition = set(condition) - {"gt", "gte", "eq"}
+        unknown_condition = set(condition) - {"gt", "gte", "eq", "glob", "startswith"}
         if not condition or unknown_condition:
             raise PolicyError("argument %s has an invalid condition" % name)
         for operator in ("gt", "gte"):
             if operator in condition and (isinstance(condition[operator], bool) or not isinstance(condition[operator], (int, float))):
                 raise PolicyError("argument %s %s must be numeric" % (name, operator))
+        for operator in ("glob", "startswith"):
+            if operator in condition and not isinstance(condition[operator], str):
+                raise PolicyError("argument %s %s must be a string" % (name, operator))
 
 
 class AuditLog:

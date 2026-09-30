@@ -58,13 +58,14 @@ aag decide examples/policy.yaml '{"tool":"terraform.apply","env":"production"}'
 
 ## Fixtures
 
-Packs under `fixtures/{clean,deny,empty,malicious,boundary,sarif}/`:
+Packs under `fixtures/{clean,deny,empty,malicious,boundary,path_glob,sarif}/`:
 
 - **clean** — matching allow rules
 - **deny** — default deny and explicit deny rules
 - **empty** — invalid/empty policy or ToolCall (expect errors)
 - **malicious** — prompt text in args treated as data (not intent detection)
 - **boundary** — `gt` thresholds and call/cost budgets
+- **path_glob** — args `glob` / `startswith` on path strings; injection-in-path is data
 - **sarif** — golden SARIF 2.1.0 JSON for deny (finding) / allow (empty results)
 
 Each pack has `cases.json`. Optional `policy` paths are relative to the pack directory; omitted policy uses `examples/policy.yaml`.
