@@ -1,0 +1,31 @@
+# Stub: Trusted Publisher (OIDC) publish on GitHub Release.
+# Before the first real release, wire the GitHub Environment named `pypi`
+# to a PyPI Trusted Publisher for this repository (project: agent-action-gate).
+# Do not create a Release or upload to PyPI until that UI step is done.
+name: publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  pypi:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # OIDC for PyPI trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install build
+        run: python -m pip install --upgrade build
+      - name: Build sdist and wheel
+        run: python -m build
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
