@@ -1,5 +1,7 @@
 # Agent Action Gate
 
+[![CI](https://github.com/aisona-lab/agent-action-gate/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/aisona-lab/agent-action-gate/actions/workflows/ci.yml)
+
 Per tool call, before it runs: **allow**, **deny**, or **require human approval**. Local-first, deterministic, no LLM in the authorization path.
 
 ![An agent's terraform.apply against production is blocked, approved once by a human, executed, and the replayed token is denied](docs/demo.gif)
@@ -61,12 +63,21 @@ budgets:
 ## Quick start
 
 ```bash
+# Install from source for now (PyPI release pending Trusted Publisher setup)
 pip install -e .
-python examples/demo.py
 
+# Offline proof — same unit tests + evals as CI (no API keys)
+./scripts/prove.sh
+
+python examples/demo.py
 aag policy-check examples/policy.yaml
 aag decide examples/policy.yaml '{"tool":"terraform.apply","env":"production"}'
 ```
+
+Publishing: `.github/workflows/publish.yml` is a Trusted Publisher stub
+(`release` → build → `pypa/gh-action-pypi-publish`). Wire the GitHub
+Environment `pypi` to PyPI before the first real release; until then keep
+using `pip install -e .`.
 
 ## Approvals that survive restarts
 
@@ -110,9 +121,11 @@ The MCP SDK is not a core dependency; install it only where you run a server.
 Run the harness (unit tests + evals, including `fixtures/` packs):
 
 ```bash
-pip install -e .
-python -m unittest discover -s tests -v
-PYTHONPATH=src python evals/run.py
+./scripts/prove.sh
+# equivalent:
+# pip install -e .
+# python -m unittest discover -s tests -v
+# PYTHONPATH=src python evals/run.py
 ```
 
 Feature → test/eval/fixture coverage: [docs/FEATURE_MAP.md](docs/FEATURE_MAP.md). Contributor/agent notes: [AGENTS.md](AGENTS.md). CI: [`.github/workflows/ci.yml`](.github/workflows/ci.yml) (template [docs/ci-workflow.yml](docs/ci-workflow.yml)) — unittest + evals, no API keys.

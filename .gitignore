@@ -1,6 +1,8 @@
-__pycache__/
-*.py[cod]
-*.egg-info/
-examples/audit.jsonl
 *.db
+*.egg-info/
+*.py[cod]
 .venv/
+__pycache__/
+build/
+dist/
+examples/audit.jsonl
