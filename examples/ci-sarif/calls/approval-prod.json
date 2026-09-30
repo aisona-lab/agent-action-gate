@@ -1,0 +1,5 @@
+{
+  "tool": "terraform.apply",
+  "args": {"plan": "prod.tfplan"},
+  "env": "production"
+}

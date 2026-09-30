@@ -1,0 +1,6 @@
+{
+  "tool": "github.delete_repository",
+  "args": {"name": "demo"},
+  "action": "write",
+  "env": "development"
+}

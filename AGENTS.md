@@ -35,6 +35,7 @@ See [`LEARNINGS.md`](LEARNINGS.md). Short form:
 | `src/aag/sarif.py` | Offline SARIF 2.1.0 export from Decision (+ ToolCall) |
 | `src/aag/approvals.py` | Local HTTP approval bridge on 127.0.0.1 |
 | `examples/policy.yaml` | Canonical example policy used by evals |
+| `examples/ci-sarif/` | Example GH Action: fixture calls → SARIF → upload-sarif (not CodeQL) |
 | `tests/` | Unit tests (behavior guarantees) |
 | `evals/` | Deterministic decision evals |
 | `fixtures/` | Scenario packs consumed by the eval runner |

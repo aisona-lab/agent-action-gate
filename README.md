@@ -91,6 +91,11 @@ aag decide examples/policy.yaml \
 
 Golden fixtures: [`fixtures/sarif/`](fixtures/sarif/). API: `aag.sarif.decision_to_sarif`.
 
+### Example GitHub Action (SARIF upload)
+
+[`examples/ci-sarif/`](examples/ci-sarif/) + [`.github/workflows/example-sarif.yml`](.github/workflows/example-sarif.yml) run the gate on fixture tool-calls (including a deny), write SARIF, and upload with `github/codeql-action/upload-sarif` so findings can appear under **Security → Code scanning**. Offline, no LLM keys, install from this repo only — **not** CodeQL and not a claim of CodeQL equivalence. Upload is intended for `push` to `main` / `workflow_dispatch` (fork PRs may lack `security-events` write). Visibility depends on default-branch / public-repo code scanning rules. Main [`ci.yml`](.github/workflows/ci.yml) stays keyless and unchanged.
+
+
 ## Approvals that survive restarts
 
 Pass a SQLite path. Tokens are stored as hashes, expire in 10 minutes, and are consumed exactly once.

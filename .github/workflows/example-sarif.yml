@@ -1,0 +1,61 @@
+# Example only: offline aag decide → SARIF → upload-sarif (Security tab demo).
+# Not CodeQL. No LLM keys. Does not replace ci.yml.
+name: Example SARIF
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "examples/ci-sarif/**"
+      - ".github/workflows/example-sarif.yml"
+      - "src/aag/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "examples/ci-sarif/**"
+      - ".github/workflows/example-sarif.yml"
+      - "src/aag/**"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  sarif-example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package from this repo (not live PyPI)
+        run: pip install -e .
+
+      - name: Generate SARIF from fixture tool-calls
+        run: |
+          python examples/ci-sarif/generate_sarif.py --out aag-example.sarif
+          python -c "import json; d=json.load(open('aag-example.sarif')); r=d['runs'][0]['results']; assert any(x.get('level')=='error' for x in r), r; print('ok: %d finding(s)' % len(r))"
+
+      - name: Upload SARIF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aag-example-sarif
+          path: aag-example.sarif
+
+      # Upload to code scanning so Security tab can show deny findings.
+      # Fork PRs often lack security-events write — skip those; push to main /
+      # workflow_dispatch from this repo still publishes after merge.
+      - name: Upload SARIF to code scanning
+        if: >
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          (github.event_name == 'pull_request' &&
+           github.event.pull_request.head.repo.full_name == github.repository)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: aag-example.sarif
+          category: agent-action-gate-example
