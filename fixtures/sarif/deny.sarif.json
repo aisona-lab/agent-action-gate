@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "error",
+          "locations": [
+            {
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "github.delete_repository",
+                  "kind": "tool",
+                  "name": "github.delete_repository"
+                }
+              ],
+              "message": {
+                "text": "tool=github.delete_repository action=write env=development"
+              }
+            }
+          ],
+          "message": {
+            "text": "Repository deletion is disabled."
+          },
+          "properties": {
+            "aag.action": "write",
+            "aag.effect": "deny",
+            "aag.env": "development",
+            "aag.rule_id": "dangerous-delete",
+            "aag.tool": "github.delete_repository"
+          },
+          "ruleId": "dangerous-delete"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/aisona-lab/agent-action-gate",
+          "name": "agent-action-gate",
+          "rules": [
+            {
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "id": "dangerous-delete",
+              "shortDescription": {
+                "text": "Repository deletion is disabled."
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}

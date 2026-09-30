@@ -31,7 +31,8 @@ See [`LEARNINGS.md`](LEARNINGS.md). Short form:
 |------|------|
 | `src/aag/core.py` | Policy, Gate, ToolCall, Decision, budgets, approvals, audit |
 | `src/aag/mcp.py` | `guarded_tool` wrapper (MCP SDK optional) |
-| `src/aag/cli.py` | `aag policy-check`, `decide`, `serve-approvals` |
+| `src/aag/cli.py` | `aag policy-check`, `decide` (`--format json|sarif`), `serve-approvals` |
+| `src/aag/sarif.py` | Offline SARIF 2.1.0 export from Decision (+ ToolCall) |
 | `src/aag/approvals.py` | Local HTTP approval bridge on 127.0.0.1 |
 | `examples/policy.yaml` | Canonical example policy used by evals |
 | `tests/` | Unit tests (behavior guarantees) |
@@ -56,13 +57,14 @@ aag decide examples/policy.yaml '{"tool":"terraform.apply","env":"production"}'
 
 ## Fixtures
 
-Packs under `fixtures/{clean,deny,empty,malicious,boundary}/`:
+Packs under `fixtures/{clean,deny,empty,malicious,boundary,sarif}/`:
 
 - **clean** — matching allow rules
 - **deny** — default deny and explicit deny rules
 - **empty** — invalid/empty policy or ToolCall (expect errors)
 - **malicious** — prompt text in args treated as data (not intent detection)
 - **boundary** — `gt` thresholds and call/cost budgets
+- **sarif** — golden SARIF 2.1.0 JSON for deny (finding) / allow (empty results)
 
 Each pack has `cases.json`. Optional `policy` paths are relative to the pack directory; omitted policy uses `examples/policy.yaml`.
 

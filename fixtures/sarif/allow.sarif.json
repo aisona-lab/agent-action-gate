@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/aisona-lab/agent-action-gate",
+          "name": "agent-action-gate",
+          "rules": []
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
