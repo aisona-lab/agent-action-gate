@@ -46,6 +46,13 @@ Process lessons: [`LEARNINGS.md`](../LEARNINGS.md) (SPEC→PLAN→OK→prove→m
 | `aag policy-check` / `decide` | manual / CI can invoke policy-check on example | fixture policies validated via runner | `empty/` (invalid) |
 | `decide --format sarif` (SARIF 2.1.0 export) | `tests/test_sarif.py` | — | `fixtures/sarif/` |
 
+
+## Example CI SARIF upload (`examples/ci-sarif/`)
+
+| Feature | Tests / proof | Notes |
+|---------|---------------|-------|
+| Offline decide → SARIF + upload-sarif workflow | `examples/ci-sarif/`, `.github/workflows/example-sarif.yml` | Demo only; not CodeQL. Path-filtered + `workflow_dispatch`. Upload on main push / dispatch; PRs artifact only. Example adds physicalLocation for GitHub. Main `ci.yml` unchanged / keyless. |
+
 ## How to run
 
 ```bash

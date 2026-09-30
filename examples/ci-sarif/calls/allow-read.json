@@ -1,0 +1,5 @@
+{
+  "tool": "github.get_repo",
+  "action": "read",
+  "env": "development"
+}
