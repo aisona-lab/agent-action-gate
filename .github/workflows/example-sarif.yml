@@ -41,7 +41,7 @@ jobs:
           python -c "import json; d=json.load(open('aag-example.sarif')); r=d['runs'][0]['results']; assert any(x.get('level')=='error' for x in r), r; print('ok: %d finding(s)' % len(r))"
 
       - name: Upload SARIF artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: aag-example-sarif
           path: aag-example.sarif
