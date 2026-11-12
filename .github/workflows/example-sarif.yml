@@ -19,11 +19,17 @@ on:
 
 permissions:
   contents: read
-  security-events: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   sarif-example:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write # only the upload-sarif step (push to main / manual) needs this
     steps:
       - uses: actions/checkout@v7
 
@@ -31,6 +37,8 @@ jobs:
         uses: actions/setup-python@v7
         with:
           python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
       - name: Install package from this repo (not live PyPI)
         run: pip install -e .
