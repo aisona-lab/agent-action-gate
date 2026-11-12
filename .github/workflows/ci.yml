@@ -15,7 +15,9 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest is now Ubuntu 26.04, which has no Python 3.9 build for setup-python.
+    # Keeps the required checks `test (3.9)` / `test (3.11)` reporting until 3.9 support is dropped.
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
